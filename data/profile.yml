@@ -1,0 +1,16 @@
+name: 강민혁
+tagline: 사용자에게 닿는 기술을 만듭니다.
+contacts:
+  - kind: phone
+    value: 010-9844-4664
+  - kind: email
+    value: kangminhyuk11111@gmail.com
+    href: mailto:kangminhyuk11111@gmail.com
+  - kind: github
+    label: GitHub
+    href: https://github.com/kangminhyuk1111
+    id: link-github
+  - kind: blog
+    label: 기술 블로그
+    href: https://kangminhyuk1111.tistory.com
+    id: link-blog

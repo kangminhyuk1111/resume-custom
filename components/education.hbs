@@ -1,0 +1,16 @@
+<section class="section fade-up">
+  <h2 class="section-title">{{section_title}}</h2>
+
+  {{#each items}}
+  <div class="edu-item">
+    <div>
+      <div class="edu-date">{{date}}</div>
+      {{#if ongoing}}<span class="edu-badge">진행중</span>{{/if}}
+    </div>
+    <div class="edu-content">
+      <h3>{{title}}</h3>
+      {{{body}}}
+    </div>
+  </div>
+  {{/each}}
+</section>

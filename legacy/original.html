@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강민혁 - 사용자에게 닿는 기술을 만듭니다</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-secondary: #555555;
+    --text-muted: #888888;
+    --accent: #1B4DFF;
+    --accent-light: #E8EEFF;
+    --accent-glow: rgba(27, 77, 255, 0.08);
+    --border: #E5E5E3;
+    --border-light: #F0F0EE;
+    --tag-bg: #F3F3F1;
+    --success: #0D8A5E;
+    --success-bg: #E6F5EE;
+    --warn: #C44900;
+    --warn-bg: #FFF3EB;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans KR', -apple-system, sans-serif;
+    --display: 'Playfair Display', serif;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Print Styles ── */
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    body { background: #fff; }
+    .container { max-width: 100%; padding: 0 1.5rem; }
+    .hero { padding: 2rem 0; }
+    .section { break-inside: auto; }
+    .project { break-inside: auto; page-break-inside: auto; }
+    .step { break-inside: avoid; }
+    .reflection p {
+    margin-bottom: 0.5rem;
+  }
+  .reflection p:last-child {
+    margin-bottom: 0;
+  }
+
+  .reflection { break-inside: avoid; }
+    .metrics-row { break-inside: avoid; }
+    .arch-diagram { break-inside: avoid; }
+    .metric-card { box-shadow: none; }
+    .tech-tag.core,
+    .tech-tag.ai,
+    .summary,
+    .metric-card.improve,
+    .metric-card.problem,
+    .arch-box.client,
+    .arch-box.app,
+    .arch-box.db,
+    .project-type.personal,
+    .project-type.work,
+    .reflection {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 6rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 3.5rem 0 1.25rem;
+    border-bottom: 2px solid var(--text-primary);
+    margin-bottom: 0.75rem;
+    position: relative;
+  }
+
+  .hero-name-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-name {
+    font-family: var(--sans);
+    font-weight: 900;
+    font-size: 3rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .hero-tagline {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .hero-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .hero-contacts a,
+  .hero-contacts span {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s;
+  }
+
+  .hero-contacts a:hover { color: var(--accent); }
+
+  .contact-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ── Summary Box ── */
+  .summary {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 1.75rem;
+    background: #F0F4FF;
+    border: 1px solid rgba(27, 77, 255, 0.12);
+    border-radius: var(--radius);
+  }
+
+  .summary-headline {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-headline .highlight-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .summary-body {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .summary-body strong {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .summary-body .highlight-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(27, 77, 255, 0.08);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: 3rem; }
+
+  .section-title {
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Tech Stack ── */
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    background: var(--tag-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    transition: all 0.2s;
+  }
+
+  .tech-tag:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: rgba(27, 77, 255, 0.15);
+  }
+
+  .tech-tag.core {
+    background: var(--accent);
+    color: #FFFFFF;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .tech-tag.core:hover {
+    background: #1440DD;
+    border-color: #1440DD;
+    color: #FFFFFF;
+  }
+
+  .tech-tag.ai {
+    background: linear-gradient(135deg, #1B4DFF 0%, #6366F1 100%);
+    color: #FFFFFF;
+    border-color: transparent;
+    font-weight: 600;
+  }
+
+  .tech-tag.ai:hover {
+    background: linear-gradient(135deg, #1440DD 0%, #5558E0 100%);
+    color: #FFFFFF;
+  }
+
+  .tech-group-label { display: none; }
+
+  /* ── Experience ── */
+  .exp-header {
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-company {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .exp-role {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.15rem;
+  }
+
+  .exp-period {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .exp-highlights li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.75;
+  }
+
+  .exp-highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .exp-highlights li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── Project Cards ── */
+  .project {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s;
+  }
+
+  .project:hover { box-shadow: var(--shadow-md); }
+
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .project-title-links {
+    display: inline-flex;
+    gap: 0.4rem;
+    margin-left: auto;
+  }
+
+  .project-title-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .project-title-link:hover {
+    color: var(--accent);
+    border-color: rgba(27, 77, 255, 0.3);
+    background: var(--accent-light);
+  }
+
+  .project-title-link svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .project-type {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .project-type.personal {
+    background: #F0F4FF;
+    color: var(--accent);
+    border: 1px solid rgba(27, 77, 255, 0.15);
+  }
+
+  .project-type.work {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(13, 138, 94, 0.15);
+  }
+
+  .project-type.service {
+    background: #FFF4E6;
+    color: #D97706;
+    border: 1px solid rgba(217, 119, 6, 0.15);
+  }
+
+  /* Problem Cards */
+  .problem-card {
+    background: #FAFBFC;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .problem-card .step-label {
+    margin-bottom: 0.25rem;
+  }
+
+  .problem-card .step-title {
+    margin-bottom: 0.4rem;
+  }
+
+  .problem-card p {
+    margin: 0 0 0.6rem 0;
+  }
+
+  .problem-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media print {
+    .problem-card {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      break-inside: avoid;
+    }
+  }
+
+  /* Metric Cards */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Architecture Diagram */
+  .arch-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 1rem;
+    padding: 0.75rem 0.5rem;
+    background: #F8F9FB;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  .arch-node {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .arch-box {
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    min-width: 110px;
+    position: relative;
+  }
+
+  .arch-box-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.15rem;
+  }
+
+  .arch-box-sub {
+    font-size: 0.62rem;
+    line-height: 1.4;
+    margin-bottom: 0.1rem;
+  }
+
+  .arch-box-metric {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+    padding-top: 0.2rem;
+  }
+
+  .arch-box.client {
+    background: #F0F4FF;
+    border: 1.5px solid rgba(27, 77, 255, 0.2);
+  }
+  .arch-box.client .arch-box-label { color: var(--accent); }
+  .arch-box.client .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-box.app {
+    background: #FFF3EB;
+    border: 1.5px solid rgba(196, 73, 0, 0.2);
+  }
+  .arch-box.app .arch-box-label { color: var(--warn); }
+  .arch-box.app .arch-box-sub { color: #8B4513; }
+  .arch-box.app .arch-box-metric {
+    color: #C44900;
+    border-top: 1px dashed rgba(196, 73, 0, 0.25);
+  }
+
+  .arch-box.db {
+    background: #FFEBEB;
+    border: 1.5px solid rgba(220, 38, 38, 0.2);
+  }
+  .arch-box.db .arch-box-label { color: #DC2626; }
+  .arch-box.db .arch-box-sub { color: #991B1B; }
+  .arch-box.db .arch-box-metric {
+    color: #DC2626;
+    border-top: 1px dashed rgba(220, 38, 38, 0.25);
+  }
+
+  .arch-box.agent-research {
+    background: #E8EEFF;
+    border: 1.5px solid rgba(27, 77, 255, 0.2);
+  }
+  .arch-box.agent-research .arch-box-label { color: var(--accent); }
+  .arch-box.agent-research .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-box.agent-edit {
+    background: #F0FFF4;
+    border: 1.5px solid rgba(13, 138, 94, 0.2);
+  }
+  .arch-box.agent-edit .arch-box-label { color: var(--success); }
+  .arch-box.agent-edit .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-box.agent-build {
+    background: #FFF3EB;
+    border: 1.5px solid rgba(196, 73, 0, 0.2);
+  }
+  .arch-box.agent-build .arch-box-label { color: var(--warn); }
+  .arch-box.agent-build .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-box.agent-publish {
+    background: #FBF0FF;
+    border: 1.5px solid rgba(139, 92, 246, 0.2);
+  }
+  .arch-box.agent-publish .arch-box-label { color: #7C3AED; }
+  .arch-box.agent-publish .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-box.agent-eval {
+    background: #FEF3C7;
+    border: 1.5px solid rgba(217, 119, 6, 0.2);
+  }
+  .arch-box.agent-eval .arch-box-label { color: #D97706; }
+  .arch-box.agent-eval .arch-box-sub { color: var(--text-secondary); }
+
+  .arch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 0.35rem;
+    flex-shrink: 0;
+  }
+
+  .arch-arrow svg {
+    width: 28px;
+    height: 16px;
+    color: var(--text-muted);
+  }
+
+  .metric-card {
+    padding: 0.65rem 0.9rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .metric-card.improve {
+    background: var(--success-bg);
+    border: 1px solid rgba(13, 138, 94, 0.15);
+  }
+
+  .metric-card.problem {
+    background: var(--warn-bg);
+    border: 1px solid rgba(196, 73, 0, 0.12);
+  }
+
+  .metric-label {
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+  }
+
+  .metric-card.improve .metric-label { color: var(--success); }
+  .metric-card.problem .metric-label { color: var(--warn); }
+
+  .metric-value {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .metric-card.improve .metric-value { color: #0A6B4A; }
+  .metric-card.problem .metric-value { color: #A33D00; }
+
+  .metric-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+  }
+
+  /* Accordion Steps */
+  .step {
+    border-left: 2px solid var(--border);
+    padding-left: 1.25rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -5.5px;
+    top: 0.5rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+  }
+
+  .step-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .step-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .step p {
+    font-size: 0.88rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .step code {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    background: var(--tag-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* Reflection */
+  .reflection {
+    background: var(--accent-glow);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: 1.25rem;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .reflection strong {
+    color: var(--text-primary);
+  }
+
+  /* ── Education & Growth ── */
+  .edu-item {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .edu-date {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    min-width: 130px;
+    padding-top: 0.15rem;
+    flex-shrink: 0;
+  }
+
+  .edu-badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 100px;
+    background: var(--success-bg);
+    color: var(--success);
+    display: inline-block;
+    margin-top: 0.15rem;
+  }
+
+  .edu-content h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .edu-content p {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  /* ── Certifications ── */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .cert-item {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cert-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .cert-date {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Links placeholder ── */
+  .link-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(27, 77, 255, 0.3);
+    padding-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+
+  .link-icon:hover { border-bottom-color: var(--accent); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .container { padding: 1.5rem 1.25rem 4rem; }
+    .hero-name { font-size: 2.2rem; }
+    .hero-contacts { flex-direction: column; gap: 0.5rem; }
+    .metrics-row { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .edu-item { flex-direction: column; gap: 0.3rem; }
+    .edu-date { min-width: auto; }
+    .project { padding: 1.5rem; }
+  }
+
+  /* ── Fade-in animation ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.1s; }
+  .fade-up:nth-child(3) { animation-delay: 0.15s; }
+  .fade-up:nth-child(4) { animation-delay: 0.2s; }
+  .fade-up:nth-child(5) { animation-delay: 0.25s; }
+  .fade-up:nth-child(6) { animation-delay: 0.3s; }
+  .fade-up:nth-child(7) { animation-delay: 0.35s; }
+  .fade-up:nth-child(8) { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ════════ Hero ════════ -->
+  <header class="hero fade-up">
+    <div class="hero-name-line">
+      <h1 class="hero-name">강민혁</h1>
+      <p class="hero-tagline">사용자에게 닿는 기술을 만듭니다.</p>
+    </div>
+    <div class="hero-contacts">
+      <span>
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        010-9844-4664
+      </span>
+      <a href="mailto:kangminhyuk11111@gmail.com">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        kangminhyuk11111@gmail.com
+      </a>
+      <a href="https://github.com/kangminhyuk1111" id="link-github" target="_blank">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://kangminhyuk1111.tistory.com" id="link-blog" target="_blank">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        기술 블로그
+      </a>
+    </div>
+  </header>
+
+  <!-- ════════ Summary ════════ -->
+  <div class="summary fade-up">
+    <div class="summary-headline">
+      결국 서비스는 사용자에게 닿아야 합니다.
+    </div>
+    <div class="summary-body">
+      <strong>AI가 만드는 것보다, AI가 만든 결과물을 프로덕션 품질로 운영하는 것이 훨씬 어렵습니다.</strong> 200명이 넘는 구독자에게 매일 아침 아티클을 보내는 서비스 dev-letter를 직접 만들고 운영하면서 이 사실을 매일 체감하고 있습니다. SMTP 한도를 지키는 것도, 중복 발송을 막는 것도, 결국 구독자가 내일도 이 서비스를 쓰고 싶게 만드는 일입니다.<br><br>
+      <strong>AI로 자동화할수록 새로운 엔지니어링 과제가 열리고, 그 과제를 해결하면 또 다음 자동화가 가능해지는 순환</strong>을 직접 경험했습니다. 여러 에이전트가 동시에 작업할 때 생기는 충돌, 자동화된 발송의 중복 방지, SMTP 자원 보호. 이런 문제들은 AI를 실제 서비스에 넣어본 사람만 마주칩니다. 이 순환을 만들어낼 수 있는 팀에서 일하고 싶습니다.
+    </div>
+  </div>
+
+
+
+  <!-- ════════ Experience ════════ -->
+  <section class="section fade-up">
+    <h2 class="section-title">경력</h2>
+
+    <div class="exp-header">
+      <div class="exp-company">(주)유엔에스네트웍스 · 모바일 운영팀</div>
+      <div class="exp-role">Backend Developer · 원내 출입 시스템 및 데이터 통신 프레임워크 개발, 운영</div>
+      <div class="exp-period">2023.07 - 2025.12</div>
+    </div>
+
+    <ul class="exp-highlights">
+      <li><strong>일 5~10회 현장 출동을 1회로 줄이는 자체 QR 인증 솔루션을 개발했습니다.</strong> 원내 QR 출입 장애로 현장 인력이 매번 PC를 재부팅하러 뛰어가는 상황이 반복됐습니다. 근본 원인을 분석하고 병원 서버팀과 직접 소통하여 인증 API를 별도로 요청받아 경량 앱을 설계·배포했습니다.</li>
+      <li><strong>서비스마다 복사·붙여넣기되던 변환 코드를 공통 모듈로 추출하여 코드량 20~40% 절감했습니다.</strong> 필드 하나가 바뀌면 여러 파일을 동시에 수정해야 하는 구조가 문제였습니다. 프레임워크 내부에 공통 모듈을 설계하여 각 서비스에서는 설정값만 넘기면 되도록 구조를 변경했습니다.</li>
+      <li><strong>레거시 전체에서 수십 건의 SQL Injection 취약점을 자발적으로 발견하고 전면 제거했습니다.</strong> 보안 관련 이슈를 접하고 궁금해서 학습한 뒤, 그날 바로 "우리 코드는 괜찮을까?" 하는 생각에 실무 코드를 점검했습니다. SQLMap 테스트에서 실제로 Injection이 성공하는 상태였고, PreparedStatement로 전면 전환하여 차단을 확인했습니다.</li>
+      <li><strong>팀에 학습 문화가 전무한 상황에서 Java 스터디를 직접 기획하고 3개월간 운영했습니다(주 2회).</strong> 개발 기술은 빠르게 변하는데 팀 내에서 기술을 공유하는 루틴이 없었습니다. 주 1회 블로깅 공유를 정착시키며 팀 안에서 기술을 이야기하는 분위기를 만들어갔습니다.</li>
+    </ul>
+  </section>
+
+  <!-- ════════ Projects ════════ -->
+  <section class="section fade-up">
+    <h2 class="section-title">프로젝트</h2>
+
+    <!-- Project 0: dev-letter -->
+    <div class="project">
+      <h3 class="project-title">
+        dev-letter · 인터랙티브 개발 뉴스레터 서비스
+        <span class="project-type service">서비스 운영 중</span>
+        <span class="project-title-links">
+          <a href="https://dev-letter.kr" class="project-title-link" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            Service
+          </a>
+          <a href="https://www.instagram.com/devletter.offcial/" class="project-title-link" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram
+          </a>
+        </span>
+      </h3>
+
+      <!-- 에이전트 파이프라인 다이어그램 -->
+      <div class="arch-diagram">
+        <div style="display:flex;align-items:center;justify-content:center;gap:0;">
+          <div class="arch-node"><div class="arch-box agent-research"><div class="arch-box-label">Researcher</div><div class="arch-box-sub">웹 리서치</div></div></div>
+          <div class="arch-arrow"><svg viewBox="0 0 30 20" fill="none"><path d="M0 10h22m0 0l-5-4m5 4l-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="arch-node"><div class="arch-box agent-edit"><div class="arch-box-label">Editor</div><div class="arch-box-sub">초안 작성</div></div></div>
+          <div class="arch-arrow"><svg viewBox="0 0 30 20" fill="none"><path d="M0 10h22m0 0l-5-4m5 4l-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="arch-node"><div class="arch-box agent-build"><div class="arch-box-label">Builder</div><div class="arch-box-sub">시각화 구현</div></div></div>
+          <div class="arch-arrow"><svg viewBox="0 0 30 20" fill="none"><path d="M0 10h22m0 0l-5-4m5 4l-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="arch-node"><div class="arch-box agent-publish"><div class="arch-box-label">Publisher</div><div class="arch-box-sub">발행 + 검수</div></div></div>
+          <div class="arch-arrow"><svg viewBox="0 0 30 20" fill="none"><path d="M0 10h22m0 0l-5-4m5 4l-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="arch-node"><div class="arch-box agent-eval"><div class="arch-box-label">Evaluator</div><div class="arch-box-sub">18항목 평가</div></div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">서비스 소개</div>
+        <p>개발자를 위한 <strong>인터랙티브 시각화 기반 기술 뉴스레터</strong> 서비스입니다. CS 지식을 Framer Motion 기반 시각화 컴포넌트로 만들어, 직관적으로 이해할 수 있도록 설계했습니다. AI를 활용하여 <strong>4일 만에 서비스를 런칭</strong>했고, 현재 <strong>200명 이상의 구독자</strong>에게 매일 아침 아티클을 발송하고 있습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">기술 스택</div>
+        <p>
+          <strong>Frontend</strong> · Next.js 16, TypeScript, shadcn/ui, Tailwind CSS 4, Framer Motion<br>
+          <strong>Backend</strong> · Java 21, Spring Boot 3.4, Spring Data JPA, Spring Security, Flyway<br>
+          <strong>Infra</strong> · AWS EC2, Nginx, Docker Compose, Terraform, GitHub Actions, Cloudflare Pages
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">아키텍처</div>
+        <p><strong>Cloudflare Pages</strong>에서 아티클을 렌더링하고, <strong>Spring Boot API 서버</strong>가 구독·인증·발송을 담당합니다. 프론트엔드에서 아티클이 main에 머지되면 GitHub Actions가 전체 메타데이터를 백엔드에 POST하는 <strong>선언적 동기화 방식</strong>을 채택했습니다. <strong>매일 오전 8시 스케줄러</strong>가 구독자별 수신 주기(매일/주 3회/주 1회)에 맞춰 자동 발송합니다.</p>
+        <p>인프라는 <strong>Terraform 기반 IaC</strong>로 관리하고, 테스트 환경에서는 H2를 금지하고 <strong>Testcontainers MySQL만 허용</strong>하여 프로덕션과의 괴리를 원천 차단했습니다.</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="step-title">AI 파이프라인 설계 · 왜 역할을 분리했는가</div>
+        <p><strong>AI로 아티클을 생성하는 것보다, 항상 일관된 품질을 내는 파이프라인을 구축하는 것이 가장 어려웠습니다.</strong></p>
+        <p>초기 4단계에서는 에이전트 간 역할 경계가 불명확하여 중복 작업과 파일 충돌이 발생했습니다. 이를 해결하기 위해 8단계로 세분화했지만, 단계가 많아지면서 토큰 사용량이 오히려 증가했습니다.</p>
+        <p>최종적으로 5단계 + Director 체제로 정리했습니다. 에이전트 간 직접 통신 없이 <strong>파일 시스템을 인터페이스</strong>로 사용하고, hooks로 각 에이전트의 쓰기 경로를 물리적으로 제한하여 간섭을 차단했습니다. 구현 단계에는 Sonnet 모델을 적용하여 <strong>토큰 30% 절감</strong>과 품질 일관성을 동시에 확보했습니다.</p>
+        <p>발행 후에는 Evaluator가 7개 카테고리 18개 항목으로 품질 평가를 수행하고, 발견된 패턴을 quality-patterns.md에 축적하여 <strong>다음 아티클에 자동 반영되는 피드백 루프</strong>를 구축했습니다.</p>
+        <p><a href="https://kangminhyuk1111.tistory.com/129" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 아티클 작성 파이프라인을 AI Agent Workflow로 자동화 개선기 →</a></p>
+      </div>
+
+      <div class="problem-card">
+        <div class="step-title">API Rate Limiter · SMTP 자원 남용 방지</div>
+        <p>공개 API에 요청 제한이 없어, 공격자가 서로 다른 이메일로 대량 요청 시 <strong>Gmail SMTP 일일 한도(100건)가 2분 내 소진</strong>되어 전체 서비스가 중단될 위험이 있었습니다. 동일 이메일에 대한 3분 쿨다운만 존재하고 IP 기반 제한은 전혀 없었습니다.</p>
+        <p><strong>Token Bucket 알고리즘을 ConcurrentHashMap 기반으로 직접 구현</strong>하고, 엔드포인트별 차등 제한(구독 5회/분, 피드백 3회/분, 기타 30회/분)을 적용하여 핵심 자원만 정확히 보호했습니다. <strong>악의적 요청에 의한 SMTP 소비 95% 이상 절감</strong>, 정상 사용자 차단율 0%를 유지하고 있습니다.</p>
+        <p><a href="https://kangminhyuk1111.tistory.com/130" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 공개 API에 요청 제한이 없으면 생기는 일 - Token Bucket으로 핵심 자원만 정확히 보호하기 →</a></p>
+      </div>
+
+      <div class="problem-card">
+        <div class="step-title">아티클 중복 발송 방지</div>
+        <p>스케줄러가 이미 발송된 아티클을 재발송하여 구독자에게 동일 콘텐츠가 중복 수신되는 문제가 있었습니다. 발송 이력 확인 없이 랜덤으로 아티클을 선택하는 구조가 원인이었습니다.</p>
+        <p><strong>발송 이력 기반으로 미발송 아티클만 필터링</strong>하여 선택하도록 로직을 변경했고, 중복 발송을 완전히 제거했습니다.</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="step-title">콘텐츠 자동화 이후의 엔지니어링 과제</div>
+        <p><strong>AI 파이프라인으로 콘텐츠 생산을 자동화한 뒤, 예상하지 못한 문제들이 연쇄적으로 드러났습니다.</strong></p>
+        <p>여러 에이전트가 동시에 같은 저장소에서 아티클을 생성하면서 <strong>git 충돌이 발생</strong>했고, worktree 격리 기반 병렬 파이프라인으로 재설계하여 해결했습니다. 콘텐츠 양이 급증하면서 기존 단일 카테고리 구조로는 탐색이 어려워졌고, <strong>CS Fundamentals를 OS·자료구조·DB로 분리</strong>하여 콘텐츠 간 연결 구조를 재설계했습니다.</p>
+        <p>초기 7단계 직렬 파이프라인(10분+)을 <strong>5단계 + 병렬 구간으로 최적화(6분)</strong>하고, 에이전트 병합과 모델 최적화로 <strong>토큰 비용 30% 절감</strong>을 달성했습니다. 4일 런칭은 의도적 트레이드오프였고, <strong>1주간 집중적으로 기술 부채를 해소</strong>하며 v1.5.0까지 22개 아티클을 발행한 상태입니다.</p>
+        <p>AI가 만드는 영역을 자동화할수록, <strong>사람이 해야 할 설계와 구조화의 영역이 더 선명해지는 경험</strong>이었습니다.</p>
+      </div>
+
+      <div class="reflection">
+        <strong>만드는 것보다 운영하면서 드러나는 문제를 해결하는 것이 엔지니어의 본질적인 역할이라고 생각합니다.</strong>
+
+        <p>구독자 피드백을 바탕으로 콘텐츠 구조와 발송 주기를 지속적으로 개선하고 있으며, 구독·인증·발송이라는 <strong>결제/배송과 유사한 트랜잭션 플로우</strong>를 직접 설계하고 운영한 경험이 있습니다.</p>
+
+        <p>4일 만에 런칭한 것은 의도적인 트레이드오프였고, 이후 <strong>기술 부채를 체계적으로 해소하며 속도와 확장성의 균형</strong>을 맞춰가고 있습니다. 자동화할수록 새로운 과제가 열리고, 그 과제를 해결하면 또 다음 자동화가 가능해지는 순환을 만들어가고 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- Project 1: 농구 매칭 성능 개선 -->
+    <div class="project">
+      <h3 class="project-title">
+        농구 매칭 서비스 · 위치 기반 매칭 조회 성능 개선
+        <span class="project-type personal">사이드</span>
+        <span class="project-title-links">
+          <a href="https://github.com/kangminhyuk1111/hoops" class="project-title-link" id="link-basketball-github" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://kangminhyuk1111.tistory.com/127" class="project-title-link" id="link-basketball-blog" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Blog
+          </a>
+        </span>
+      </h3>
+
+      <!-- Architecture Diagram -->
+      <div class="arch-diagram">
+        <div class="arch-node">
+          <div class="arch-box client">
+            <div class="arch-box-label">Client</div>
+            <div class="arch-box-sub">동시 70명</div>
+          </div>
+        </div>
+        <div class="arch-arrow">
+          <svg viewBox="0 0 36 20" fill="none"><path d="M0 10h28m0 0l-6-5m6 5l-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="arch-node">
+          <div class="arch-box app">
+            <div class="arch-box-label">App (Spring Boot)</div>
+            <div class="arch-box-sub">Haversine 전체연산</div>
+            <div class="arch-box-metric">CPU 90%</div>
+          </div>
+        </div>
+        <div class="arch-arrow">
+          <svg viewBox="0 0 36 20" fill="none"><path d="M0 10h28m0 0l-6-5m6 5l-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="arch-node">
+          <div class="arch-box db">
+            <div class="arch-box-label">DB (MySQL)</div>
+            <div class="arch-box-sub">Full Scan · No Index</div>
+            <div class="arch-box-metric">I/O 폭증</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-card problem">
+          <div class="metric-label">Before</div>
+          <div class="metric-value">TPS 4</div>
+          <div class="metric-sub">CPU 90%, Full Table Scan</div>
+        </div>
+        <div class="metric-card improve">
+          <div class="metric-label">After</div>
+          <div class="metric-value">TPS 440</div>
+          <div class="metric-sub">110배 개선 · 25ms 응답</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">문제</div>
+        <p><strong>동시 70명만 접속해도 서비스가 사실상 멈추는 상태였습니다.</strong> Application 내부에서 모든 row에 대해 <strong>Haversine 삼각함수 거리 계산</strong>을 수행하는 구조가 <strong>Full Table Scan</strong>과 결합되어, 요청마다 전체 데이터를 수학 연산으로 필터링하고 있었습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">시도 1</div>
+        <div class="step-title">"이 정도면 됐지?"라는 유혹</div>
+        <p>Spatial Index + <code>ST_Distance_Sphere</code>로 거리 계산을 DB에 위임했습니다. <strong>TPS 4에서 50으로</strong> 12배 개선. 여기서 만족할 뻔했지만, 동시 요청을 더 올려보니 DBCP가 고갈되기 시작했습니다. 테스트 환경에서는 문제없어 보였지만, 실제 부하에서는 버티지 못하는 수치였습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">시도 2</div>
+        <div class="step-title">Redis GeoHash 도입</div>
+        <p>DB 의존도를 완전히 끊어야 한다고 판단했습니다. Redis GeoHash는 2차원 좌표를 <strong>Z-order curve 기반 1차원 문자열로 변환</strong>하여 Sorted Set에 저장하는 구조로, <strong>메모리 레벨에서 O(log N) 범위 검색</strong>이 가능합니다.</p>
+        <p>읽기 비율이 압도적으로 높은 매칭 조회 특성상 캐시 레이어 도입이 적합하다고 판단했고, <strong>MySQL은 원본 저장소, Redis는 조회 전용 레이어</strong>로 책임을 분리했습니다. 데이터 정합성은 매칭 등록/수정 시 Redis에 동기 반영하는 방식으로 보장했습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">검증</div>
+        <p><strong>AWS t3.small, MySQL 8.0, Redis 7.0</strong> 환경에서 반경 5km 매칭 검색 시나리오로 부하 테스트를 수행했습니다. <strong>TPS가 4에서 440으로 110배 개선</strong>되었고, 평균 응답 시간은 <strong>5000ms에서 25ms로 단축</strong>되었습니다.</p>
+      </div>
+
+      <div class="reflection">
+        <strong>데이터가 없으면 "됐다"고 말하지 않습니다.</strong>
+
+        <p>처음에는 Spatial Index만으로 충분하다고 생각했지만, 부하를 더 올려보니 DBCP가 고갈되기 시작했고, 그제서야 테스트 결과에만 안심하고 있었다는 걸 알게 됐습니다.</p>
+
+        <p>이 경험으로 <strong>트래픽 증가에 대응하는 캐시 레이어 도입 판단 기준</strong>과 <strong>데이터 정합성 전략</strong>을 실전에서 배웠습니다. 현재 Redis가 <strong>단일 장애점(SPOF)</strong>이라는 한계가 남아있고, Sentinel/Cluster 구성으로 해결할 계획입니다.</p>
+      </div>
+    </div>
+
+    <!-- Project 2: QR 인증 시스템 -->
+    <div class="project">
+      <h3 class="project-title">
+        원내 출입 QR 인증 시스템 · 현장 출동 없는 운영 환경 구축
+        <span class="project-type work">실무 경험</span>
+      </h3>
+
+      <div class="metrics-row">
+        <div class="metric-card problem">
+          <div class="metric-label">Before</div>
+          <div class="metric-value">일 5~10회</div>
+          <div class="metric-sub">현장 출동</div>
+        </div>
+        <div class="metric-card improve">
+          <div class="metric-label">After</div>
+          <div class="metric-value">주 1~2회</div>
+          <div class="metric-sub">사실상 무출동</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">문제</div>
+        <p><strong>현장 인력이 하루 5~10회 직접 출동해 PC를 재부팅해야 하는 상황이었습니다.</strong></p>
+        <p>병원 스피드게이트(QR 인식 차단문)의 QR 인식을 담당하는 소프트웨어는 <strong>병원 인트라넷 웹앱의 "QR 인증기" 기능</strong>이었는데, 간헐적으로 WiFi가 끊기면 <strong>인트라넷 전체가 로그아웃</strong>되면서 QR 인증기 화면까지 함께 사라졌습니다. 화면이 꺼진 상태에서는 QR을 아무리 갖다 대도 인증이 되지 않았습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">해결</div>
+        <div class="step-title">복합 소프트웨어 의존을 끊고 단일 목적 앱으로 분리</div>
+        <p>먼저 병원 측에 WiFi 안정화를 요청했지만 "원인 파악이 어렵다"는 답변이 돌아왔습니다. 기존 인트라넷은 복합 소프트웨어라 QR 인증만을 위한 복구 로직을 넣기도 어려웠습니다.</p>
+        <p>2~3명의 소규모 팀에서 제가 직접 병원 서버팀과 소통하여 <strong>QR 인증 API를 별도로 요청</strong>받고, <strong>QR 인증만 수행하는 경량 앱</strong>을 직접 개발하여 스피드게이트 미니 PC에 설치했습니다.</p>
+        <p>WiFi가 끊겨도 <strong>재연결될 때까지 자동 재시도</strong>하도록 설계했고, 실제로 WiFi가 1분 이내로 복구되는 패턴이었기 때문에 이 방식으로 충분했습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">검증</div>
+        <p>로컬에서 강제 WiFi 차단 테스트 후 점진적으로 배포했습니다. 전체 적용 이후 주 단위 모니터링 결과를 팀에 공유하며, 하루 5~10회이던 현장 출동이 <strong>주 1~2회 수준</strong>으로 감소했음을 데이터로 확인시켰습니다.</p>
+        <p>완전히 0회가 되지 못하는 이유는, WiFi가 장시간 완전 단절되는 드문 경우에는 물리적 재부팅이 불가피한 현실적 한계가 있기 때문입니다.</p>
+      </div>
+
+      <div class="reflection">
+        <strong>통제할 수 없는 환경을 탓하기보다, 통제할 수 있는 범위에서 최선을 찾습니다.</strong> 병원 WiFi는 우리가 고칠 수 없었습니다. "근본 원인을 못 고치면, 근본 원인에 의존하지 않는 구조를 만들면 되지 않나?"로 발상을 바꾸니 길이 보였습니다. 완벽한 해결은 아니었지만, 출동 횟수가 눈에 띄게 줄었을 때 방향이 맞았다는 걸 확인할 수 있었습니다.
+      </div>
+    </div>
+
+    <!-- Project 3: 사내 프레임워크 -->
+    <div class="project">
+      <h3 class="project-title">
+        사내 프레임워크 코드 개선 · 중복 로직 30%+ 제거
+        <span class="project-type work">실무 경험</span>
+      </h3>
+
+      <div class="step">
+        <div class="step-label">문제</div>
+        <p><strong>서비스마다 같은 변환 코드를 매번 복사·붙여넣기하고 있었습니다.</strong> 병원 시스템과 데이터를 주고받으려면 정해진 포맷(전문)으로 변환해야 하는데, 필드 하나 바뀌면 <strong>여러 파일을 동시에 수정</strong>해야 하는 구조였습니다. 전문 처리 자체를 제거할 수 없는 외부 의존성 제약이 존재했습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">해결</div>
+        <p>2~3명의 팀에서 프레임워크 설계와 구현을 주도했습니다. 전문 구조를 없앨 수는 없으니, 반복되는 변환 로직을 한 곳에서 관리하는 방향으로 잡았습니다.</p>
+        <p>프레임워크 내부에 <code>MciUtils</code> 클래스를 설계하여 input/output 매핑 로직을 공통 모듈로 추출하고, 각 서비스에서는 설정값만 넘기면 되도록 구조를 변경했습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">검증</div>
+        <p>프레임워크 업데이트 후 각 서비스 적용을 확인했습니다. <strong>소스코드 라인 수 20~40% 절감</strong>, 동료들로부터 "코드 작성이 훨씬 수월해졌다"는 피드백을 받았습니다.</p>
+      </div>
+
+      <div class="reflection">
+        <strong>"제거할 수 없다면 다루기 쉽게 만들자."</strong>
+
+        <p>전문 처리를 없애는 게 가장 깔끔하지만, 외부 API 의존성 때문에 불가능했습니다. 대신 팀원들이 변환 코드를 신경 쓰지 않아도 되는 구조를 만든 결과, 신규 서비스 추가 시 변환 로직 작성 시간이 체감상 절반 이하로 줄었습니다.</p>
+
+        <p>AI가 실무에 가까워지고 있는 지금, 코드는 사람뿐 아니라 <strong>AI가 읽고 이해하기 좋은 구조</strong>여야 한다고 생각합니다.</p>
+      </div>
+    </div>
+
+    <!-- Project 4: SQL Injection -->
+    <div class="project">
+      <h3 class="project-title">
+        레거시 코드 SQL Injection 취약점 파악 및 개선
+        <span class="project-type work">실무 경험</span>
+      </h3>
+
+      <div class="step">
+        <div class="step-label">문제</div>
+        <p><strong>SQLMap으로 테스트해보니 실제로 Injection이 성공하는 상태였습니다.</strong></p>
+        <p>보안 관련 이슈를 접하고 궁금해서 SQL Injection을 학습한 직후, "우리 코드는 괜찮을까?"라는 생각에 레거시 코드를 분석했습니다.</p>
+        <p>사용자 입력값을 문자열 그대로 이어붙여 SQL 쿼리를 만드는 <strong>String Concatenation 방식이 여러 모듈에 걸쳐 수십 건</strong> 존재했고, <code>' OR '1'='1</code> 같은 조건으로 인증 우회나 데이터 유출이 가능한 심각한 취약점이었습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">해결</div>
+        <p>2~3명의 팀 내에서 보안 점검과 개선을 자발적으로 주도했습니다. 점진적 전환과 전면 전환 중 고민했지만, 보안 취약점은 하나라도 남아있으면 의미가 없다고 판단하여 <strong>전면 개선</strong>을 택했습니다.</p>
+        <p>전체 코드베이스를 점검하여 <code>PreparedStatement</code> 기반으로 일괄 전환하고, 누락 방지를 위해 <strong>모듈별 체크리스트</strong>를 만들어 하나씩 소거했습니다.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-label">검증</div>
+        <p>SQLMap으로 개선 전/후 비교 테스트를 수행했습니다. 개선 전 Injection 취약점이 감지되었으나, <strong>개선 후 취약점 미탐지 및 Injection 시도 전면 차단</strong>을 확인했습니다.</p>
+      </div>
+
+      <div class="reflection">
+        <strong>보안 취약점은 하나라도 남아있으면 의미가 없다는 것을 배웠습니다.</strong>
+
+        <p>점진적 전환과 전면 전환 중 고민했지만, 보안은 "거의 다 됐다"가 통하지 않는 영역이었습니다. 모듈별 체크리스트를 만들어 하나씩 소거하는 방식으로 누락을 방지한 경험이, 이후 다른 프로젝트에서도 전수 점검이 필요한 상황에서의 판단 기준이 되었습니다.</p>
+
+        <p>"배운 걸 써먹을 수 있을까?"가 아니라 "우리 코드는 괜찮을까?"로 연결되는 감각이 이때 생겼습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ Education ════════ -->
+  <section class="section fade-up">
+    <h2 class="section-title">교육 및 성장 활동</h2>
+
+    <div class="edu-item">
+      <div>
+        <div class="edu-date">2025.12 - 진행중</div>
+        <span class="edu-badge">진행중</span>
+      </div>
+      <div class="edu-content">
+        <h3>그릿 모먼츠 2기</h3>
+        <p>과제 기반 소프트웨어 밀착 멘토링 교육입니다. 약 2달간 6권의 책을 읽고 토론하며, 개발자로서 삶을 대하는 태도와 앞으로 가져야 할 마음가짐에 대해 깊이 고민했습니다. 동시에 <strong>프롬프트 엔지니어링, AI Agent Workflow 설계, 바이브 코딩</strong> 등 AI를 개발 생산성의 도구로 효과적으로 활용하는 방법론을 집중적으로 탐구했습니다.</p>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <div>
+        <div class="edu-date">2025.05 - 2025.07</div>
+      </div>
+      <div class="edu-content">
+        <h3>초록 스터디 1기</h3>
+        <p>8주간 과제 기반 학습 테스트를 통해 코드를 작성하고, 멘토·멘티·리뷰어가 코드리뷰 피드백을 공유했습니다. 멘티들에게 약 30회 이상의 코드리뷰를 수행했고, 남의 코드를 읽으면서 "왜 이렇게 짰을까"를 고민하는 습관이 생겼습니다.</p>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <div>
+        <div class="edu-date">2024.11 - 2025.02</div>
+      </div>
+      <div class="edu-content">
+        <h3>사내 스터디 리더 운영</h3>
+        <p>개발 기술의 변화 속도를 따라가려면 팀 차원의 학습이 필요하다고 느껴, Java 스터디를 기획하고 3개월간 진행했습니다. 주 1회 블로깅을 공유·발표하는 루틴을 정착시켰고, 이 스터디에서 학습한 SQL Injection 공격 원리를 다음 날 레거시 코드에 적용해본 것이 실제 취약점 발견으로 이어졌습니다.</p>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <div>
+        <div class="edu-date">2022 - 진행중</div>
+        <span class="edu-badge">진행중</span>
+      </div>
+      <div class="edu-content">
+        <h3>기술 블로그 운영</h3>
+        <p>만 4년간 공부한 내용과 개발 과정에서 겪은 시행착오를 꾸준히 기록하고 있습니다. 누군가 같은 문제를 겪었을 때 도움이 되길 바라는 마음으로 쓰고 있고, <strong>누적 포스팅 120+, 누적 방문자 수 18,000+</strong>을 기록했습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ Certifications ════════ -->
+  <section class="section fade-up">
+    <h2 class="section-title">자격증</h2>
+    <div class="cert-grid">
+      <div class="cert-item">
+        <span class="cert-name">정보처리산업기사</span>
+        <span class="cert-date">2024.06</span>
+      </div>
+      <div class="cert-item">
+        <span class="cert-name">SQL 개발자(SQLD)</span>
+        <span class="cert-date">2024.09</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

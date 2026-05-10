@@ -1,0 +1,15 @@
+{
+  "name": "resume-custom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:default": "node scripts/build.mjs default",
+    "watch": "node scripts/build.mjs default --watch"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8",
+    "js-yaml": "^4.1.0"
+  }
+}

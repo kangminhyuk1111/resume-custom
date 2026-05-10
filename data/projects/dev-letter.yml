@@ -1,0 +1,84 @@
+id: dev-letter
+title: dev-letter · 인터랙티브 개발 뉴스레터 서비스
+type: service
+type_label: 서비스 운영 중
+links:
+  - label: Service
+    href: https://dev-letter.kr
+    icon: globe
+  - label: Instagram
+    href: https://www.instagram.com/devletter.offcial/
+    icon: instagram
+
+blocks:
+  - type: arch-diagram
+    arrow_style: small
+    wrap_inner: true
+    nodes:
+      - { kind: agent-research, label: Researcher, sub: 웹 리서치 }
+      - { kind: agent-edit,     label: Editor,     sub: 초안 작성 }
+      - { kind: agent-build,    label: Builder,    sub: 시각화 구현 }
+      - { kind: agent-publish,  label: Publisher,  sub: 발행 + 검수 }
+      - { kind: agent-eval,     label: Evaluator,  sub: 18항목 평가 }
+
+  - type: step
+    label: 서비스 소개
+    body: |
+      <p>개발자를 위한 <strong>인터랙티브 시각화 기반 기술 뉴스레터</strong> 서비스입니다. CS 지식을 Framer Motion 기반 시각화 컴포넌트로 만들어, 직관적으로 이해할 수 있도록 설계했습니다. AI를 활용하여 <strong>4일 만에 서비스를 런칭</strong>했고, 현재 <strong>200명 이상의 구독자</strong>에게 매일 아침 아티클을 발송하고 있습니다.</p>
+
+  - type: step
+    label: 기술 스택
+    body: |
+      <p>
+        <strong>Frontend</strong> · Next.js 16, TypeScript, shadcn/ui, Tailwind CSS 4, Framer Motion<br>
+        <strong>Backend</strong> · Java 21, Spring Boot 3.4, Spring Data JPA, Spring Security, Flyway<br>
+        <strong>Infra</strong> · AWS EC2, Nginx, Docker Compose, Terraform, GitHub Actions, Cloudflare Pages
+      </p>
+
+  - type: step
+    label: 아키텍처
+    body: |
+      <p><strong>Cloudflare Pages</strong>에서 아티클을 렌더링하고, <strong>Spring Boot API 서버</strong>가 구독·인증·발송을 담당합니다. 프론트엔드에서 아티클이 main에 머지되면 GitHub Actions가 전체 메타데이터를 백엔드에 POST하는 <strong>선언적 동기화 방식</strong>을 채택했습니다. <strong>매일 오전 8시 스케줄러</strong>가 구독자별 수신 주기(매일/주 3회/주 1회)에 맞춰 자동 발송합니다.</p>
+      <p>인프라는 <strong>Terraform 기반 IaC</strong>로 관리하고, 테스트 환경에서는 H2를 금지하고 <strong>Testcontainers MySQL만 허용</strong>하여 프로덕션과의 괴리를 원천 차단했습니다.</p>
+
+  - id: ai-pipeline
+    type: problem
+    title: AI 파이프라인 설계 · 왜 역할을 분리했는가
+    body: |
+      <p><strong>AI로 아티클을 생성하는 것보다, 항상 일관된 품질을 내는 파이프라인을 구축하는 것이 가장 어려웠습니다.</strong></p>
+      <p>초기 4단계에서는 에이전트 간 역할 경계가 불명확하여 중복 작업과 파일 충돌이 발생했습니다. 이를 해결하기 위해 8단계로 세분화했지만, 단계가 많아지면서 토큰 사용량이 오히려 증가했습니다.</p>
+      <p>최종적으로 5단계 + Director 체제로 정리했습니다. 에이전트 간 직접 통신 없이 <strong>파일 시스템을 인터페이스</strong>로 사용하고, hooks로 각 에이전트의 쓰기 경로를 물리적으로 제한하여 간섭을 차단했습니다. 구현 단계에는 Sonnet 모델을 적용하여 <strong>토큰 30% 절감</strong>과 품질 일관성을 동시에 확보했습니다.</p>
+      <p>발행 후에는 Evaluator가 7개 카테고리 18개 항목으로 품질 평가를 수행하고, 발견된 패턴을 quality-patterns.md에 축적하여 <strong>다음 아티클에 자동 반영되는 피드백 루프</strong>를 구축했습니다.</p>
+      <p><a href="https://kangminhyuk1111.tistory.com/129" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 아티클 작성 파이프라인을 AI Agent Workflow로 자동화 개선기 →</a></p>
+
+  - id: rate-limiter
+    type: problem
+    title: API Rate Limiter · SMTP 자원 남용 방지
+    body: |
+      <p>공개 API에 요청 제한이 없어, 공격자가 서로 다른 이메일로 대량 요청 시 <strong>Gmail SMTP 일일 한도(100건)가 2분 내 소진</strong>되어 전체 서비스가 중단될 위험이 있었습니다. 동일 이메일에 대한 3분 쿨다운만 존재하고 IP 기반 제한은 전혀 없었습니다.</p>
+      <p><strong>Token Bucket 알고리즘을 ConcurrentHashMap 기반으로 직접 구현</strong>하고, 엔드포인트별 차등 제한(구독 5회/분, 피드백 3회/분, 기타 30회/분)을 적용하여 핵심 자원만 정확히 보호했습니다. <strong>악의적 요청에 의한 SMTP 소비 95% 이상 절감</strong>, 정상 사용자 차단율 0%를 유지하고 있습니다.</p>
+      <p><a href="https://kangminhyuk1111.tistory.com/130" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 공개 API에 요청 제한이 없으면 생기는 일 - Token Bucket으로 핵심 자원만 정확히 보호하기 →</a></p>
+
+  - id: duplicate-send
+    type: problem
+    title: 아티클 중복 발송 방지
+    body: |
+      <p>스케줄러가 이미 발송된 아티클을 재발송하여 구독자에게 동일 콘텐츠가 중복 수신되는 문제가 있었습니다. 발송 이력 확인 없이 랜덤으로 아티클을 선택하는 구조가 원인이었습니다.</p>
+      <p><strong>발송 이력 기반으로 미발송 아티클만 필터링</strong>하여 선택하도록 로직을 변경했고, 중복 발송을 완전히 제거했습니다.</p>
+
+  - id: post-automation
+    type: problem
+    title: 콘텐츠 자동화 이후의 엔지니어링 과제
+    body: |
+      <p><strong>AI 파이프라인으로 콘텐츠 생산을 자동화한 뒤, 예상하지 못한 문제들이 연쇄적으로 드러났습니다.</strong></p>
+      <p>여러 에이전트가 동시에 같은 저장소에서 아티클을 생성하면서 <strong>git 충돌이 발생</strong>했고, worktree 격리 기반 병렬 파이프라인으로 재설계하여 해결했습니다. 콘텐츠 양이 급증하면서 기존 단일 카테고리 구조로는 탐색이 어려워졌고, <strong>CS Fundamentals를 OS·자료구조·DB로 분리</strong>하여 콘텐츠 간 연결 구조를 재설계했습니다.</p>
+      <p>초기 7단계 직렬 파이프라인(10분+)을 <strong>5단계 + 병렬 구간으로 최적화(6분)</strong>하고, 에이전트 병합과 모델 최적화로 <strong>토큰 비용 30% 절감</strong>을 달성했습니다. 4일 런칭은 의도적 트레이드오프였고, <strong>1주간 집중적으로 기술 부채를 해소</strong>하며 v1.5.0까지 22개 아티클을 발행한 상태입니다.</p>
+      <p>AI가 만드는 영역을 자동화할수록, <strong>사람이 해야 할 설계와 구조화의 영역이 더 선명해지는 경험</strong>이었습니다.</p>
+
+  - type: reflection
+    body: |
+      <strong>만드는 것보다 운영하면서 드러나는 문제를 해결하는 것이 엔지니어의 본질적인 역할이라고 생각합니다.</strong>
+
+      <p>구독자 피드백을 바탕으로 콘텐츠 구조와 발송 주기를 지속적으로 개선하고 있으며, 구독·인증·발송이라는 <strong>결제/배송과 유사한 트랜잭션 플로우</strong>를 직접 설계하고 운영한 경험이 있습니다.</p>
+
+      <p>4일 만에 런칭한 것은 의도적인 트레이드오프였고, 이후 <strong>기술 부채를 체계적으로 해소하며 속도와 확장성의 균형</strong>을 맞춰가고 있습니다. 자동화할수록 새로운 과제가 열리고, 그 과제를 해결하면 또 다음 자동화가 가능해지는 순환을 만들어가고 있습니다.</p>

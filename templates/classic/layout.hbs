@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{profile.name}} - {{profile.tagline}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+{{#if enabled.hero}}{{> hero profile}}{{/if}}
+{{#if enabled.summary}}{{> summary summary}}{{/if}}
+{{#if enabled.experience}}{{> experience experience}}{{/if}}
+{{#if enabled.projects}}{{> projects}}{{/if}}
+{{#if enabled.education}}{{> education education}}{{/if}}
+{{#if enabled.certifications}}{{> certifications certifications}}{{/if}}
+
+</div>
+
+</body>
+</html>

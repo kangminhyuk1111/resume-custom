@@ -1,0 +1,15 @@
+<section class="section fade-up">
+  <h2 class="section-title">{{section_title}}</h2>
+
+  <div class="exp-header">
+    <div class="exp-company">{{company}}</div>
+    <div class="exp-role">{{role}}</div>
+    <div class="exp-period">{{period}}</div>
+  </div>
+
+  <ul class="exp-highlights">
+    {{#each highlights}}
+    <li>{{{this}}}</li>
+    {{/each}}
+  </ul>
+</section>

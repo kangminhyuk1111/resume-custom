@@ -1,0 +1,17 @@
+template: classic
+theme: blue
+
+sections:
+  hero: true
+  summary: true
+  experience: true
+  projects: true
+  education: true
+  certifications: true
+
+experience:
+  include: [uns-networks]
+
+projects:
+  include: [dev-letter, basketball, qr-auth, framework, sql-injection]
+  order:   [dev-letter, basketball, qr-auth, framework, sql-injection]

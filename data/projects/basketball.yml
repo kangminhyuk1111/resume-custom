@@ -1,0 +1,72 @@
+id: basketball
+title: 농구 매칭 서비스 · 위치 기반 매칭 조회 성능 개선
+type: personal
+type_label: 사이드
+links:
+  - label: GitHub
+    href: https://github.com/kangminhyuk1111/hoops
+    icon: github
+    id: link-basketball-github
+  - label: Blog
+    href: https://kangminhyuk1111.tistory.com/127
+    icon: pencil
+    id: link-basketball-blog
+
+blocks:
+  - type: arch-diagram
+    arrow_style: regular
+    wrap_inner: false
+    nodes:
+      - kind: client
+        label: Client
+        sub: 동시 70명
+      - kind: app
+        label: App (Spring Boot)
+        sub: Haversine 전체연산
+        metric: CPU 90%
+      - kind: db
+        label: DB (MySQL)
+        sub: Full Scan · No Index
+        metric: I/O 폭증
+
+  - type: metrics
+    items:
+      - kind: problem
+        label: Before
+        value: TPS 4
+        sub: CPU 90%, Full Table Scan
+      - kind: improve
+        label: After
+        value: TPS 440
+        sub: 110배 개선 · 25ms 응답
+
+  - type: step
+    label: 문제
+    body: |
+      <p><strong>동시 70명만 접속해도 서비스가 사실상 멈추는 상태였습니다.</strong> Application 내부에서 모든 row에 대해 <strong>Haversine 삼각함수 거리 계산</strong>을 수행하는 구조가 <strong>Full Table Scan</strong>과 결합되어, 요청마다 전체 데이터를 수학 연산으로 필터링하고 있었습니다.</p>
+
+  - type: step
+    label: 시도 1
+    title: '"이 정도면 됐지?"라는 유혹'
+    body: |
+      <p>Spatial Index + <code>ST_Distance_Sphere</code>로 거리 계산을 DB에 위임했습니다. <strong>TPS 4에서 50으로</strong> 12배 개선. 여기서 만족할 뻔했지만, 동시 요청을 더 올려보니 DBCP가 고갈되기 시작했습니다. 테스트 환경에서는 문제없어 보였지만, 실제 부하에서는 버티지 못하는 수치였습니다.</p>
+
+  - type: step
+    label: 시도 2
+    title: Redis GeoHash 도입
+    body: |
+      <p>DB 의존도를 완전히 끊어야 한다고 판단했습니다. Redis GeoHash는 2차원 좌표를 <strong>Z-order curve 기반 1차원 문자열로 변환</strong>하여 Sorted Set에 저장하는 구조로, <strong>메모리 레벨에서 O(log N) 범위 검색</strong>이 가능합니다.</p>
+      <p>읽기 비율이 압도적으로 높은 매칭 조회 특성상 캐시 레이어 도입이 적합하다고 판단했고, <strong>MySQL은 원본 저장소, Redis는 조회 전용 레이어</strong>로 책임을 분리했습니다. 데이터 정합성은 매칭 등록/수정 시 Redis에 동기 반영하는 방식으로 보장했습니다.</p>
+
+  - type: step
+    label: 검증
+    body: |
+      <p><strong>AWS t3.small, MySQL 8.0, Redis 7.0</strong> 환경에서 반경 5km 매칭 검색 시나리오로 부하 테스트를 수행했습니다. <strong>TPS가 4에서 440으로 110배 개선</strong>되었고, 평균 응답 시간은 <strong>5000ms에서 25ms로 단축</strong>되었습니다.</p>
+
+  - type: reflection
+    body: |
+      <strong>데이터가 없으면 "됐다"고 말하지 않습니다.</strong>
+
+      <p>처음에는 Spatial Index만으로 충분하다고 생각했지만, 부하를 더 올려보니 DBCP가 고갈되기 시작했고, 그제서야 테스트 결과에만 안심하고 있었다는 걸 알게 됐습니다.</p>
+
+      <p>이 경험으로 <strong>트래픽 증가에 대응하는 캐시 레이어 도입 판단 기준</strong>과 <strong>데이터 정합성 전략</strong>을 실전에서 배웠습니다. 현재 Redis가 <strong>단일 장애점(SPOF)</strong>이라는 한계가 남아있고, Sentinel/Cluster 구성으로 해결할 계획입니다.</p>
