@@ -49,7 +49,7 @@ blocks:
       <p>초기 4단계에서는 에이전트 간 역할 경계가 불명확하여 중복 작업과 파일 충돌이 발생했습니다. 이를 해결하기 위해 8단계로 세분화했지만, 단계가 많아지면서 토큰 사용량이 오히려 증가했습니다.</p>
       <p>최종적으로 5단계 + Director 체제로 정리했습니다. 에이전트 간 직접 통신 없이 <strong>파일 시스템을 인터페이스</strong>로 사용하고, hooks로 각 에이전트의 쓰기 경로를 물리적으로 제한하여 간섭을 차단했습니다. 구현 단계에는 Sonnet 모델을 적용하여 <strong>토큰 30% 절감</strong>과 품질 일관성을 동시에 확보했습니다.</p>
       <p>발행 후에는 Evaluator가 7개 카테고리 18개 항목으로 품질 평가를 수행하고, 발견된 패턴을 quality-patterns.md에 축적하여 <strong>다음 아티클에 자동 반영되는 피드백 루프</strong>를 구축했습니다.</p>
-      <p><a href="https://kangminhyuk1111.tistory.com/129" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 아티클 작성 파이프라인을 AI Agent Workflow로 자동화 개선기 →</a></p>
+      <p><a href="https://kangminhyuk1111.tistory.com/129" target="_blank" style="color: var(--accent);font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 아티클 작성 파이프라인을 AI Agent Workflow로 자동화 개선기 →</a></p>
 
   - id: rate-limiter
     type: problem
@@ -57,7 +57,7 @@ blocks:
     body: |
       <p>공개 API에 요청 제한이 없어, 공격자가 서로 다른 이메일로 대량 요청 시 <strong>Gmail SMTP 일일 한도(100건)가 2분 내 소진</strong>되어 전체 서비스가 중단될 위험이 있었습니다. 동일 이메일에 대한 3분 쿨다운만 존재하고 IP 기반 제한은 전혀 없었습니다.</p>
       <p><strong>Token Bucket 알고리즘을 ConcurrentHashMap 기반으로 직접 구현</strong>하고, 엔드포인트별 차등 제한(구독 5회/분, 피드백 3회/분, 기타 30회/분)을 적용하여 핵심 자원만 정확히 보호했습니다. <strong>악의적 요청에 의한 SMTP 소비 95% 이상 절감</strong>, 정상 사용자 차단율 0%를 유지하고 있습니다.</p>
-      <p><a href="https://kangminhyuk1111.tistory.com/130" target="_blank" style="color:#1B4DFF;font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 공개 API에 요청 제한이 없으면 생기는 일 - Token Bucket으로 핵심 자원만 정확히 보호하기 →</a></p>
+      <p><a href="https://kangminhyuk1111.tistory.com/130" target="_blank" style="color: var(--accent);font-size:0.82rem;text-decoration:none;display:inline-block;">📝 Blog | 공개 API에 요청 제한이 없으면 생기는 일 - Token Bucket으로 핵심 자원만 정확히 보호하기 →</a></p>
 
   - id: duplicate-send
     type: problem

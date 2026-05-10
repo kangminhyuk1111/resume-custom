@@ -1,0 +1,20 @@
+extends: _default.yml
+theme: karrot
+
+# 당근 커머스팀 백엔드 채용 (rec_idx=53842181)
+# 강조점:
+#   - 트래픽 처리 / 성능 최적화 (MySQL + Redis)
+#   - AI 도구 적극 활용 (Claude Code, Cursor)
+#   - 결제·주문·배송 트랜잭션 도메인
+#   - 속도/확장성 균형, 기술 부채 관리
+#
+# 5개 → 3개 프로젝트로 압축. QR 인증, SQL Injection 제거.
+# dev-letter problems 4개 → 3개. rate-limiter 를 맨 앞으로 (트래픽 보호 첫인상).
+
+projects:
+  include: [dev-letter, basketball, framework]
+  order:   [dev-letter, basketball, framework]
+
+  dev-letter:
+    problems:       [rate-limiter, ai-pipeline, post-automation]
+    problems_order: [rate-limiter, ai-pipeline, post-automation]

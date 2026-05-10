@@ -1,0 +1,63 @@
+:root {
+  /* ── Surface / Text (theme-stable) ── */
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: #E5E5E3;
+  --border-light: #F0F0EE;
+  --tag-bg: #F3F3F1;
+
+  /* ── Accent: Karrot 오렌지 ── */
+  --accent: #FF7E36;
+  --accent-rgb: 255, 126, 54;
+  --accent-strong: #E66A1F;
+  --accent-light: #FFE2D0;
+  --accent-soft: #FFF2E6;
+  --accent-glow: rgba(255, 126, 54, 0.10);
+
+  /* ── Semantic palette (stable across themes) ── */
+  --success: #0D8A5E;
+  --success-rgb: 13, 138, 94;
+  --success-bg: #E6F5EE;
+  --success-tint: #F0FFF4;
+  --success-strong: #0A6B4A;
+
+  --warn: #C44900;
+  --warn-rgb: 196, 73, 0;
+  --warn-bg: #FFF3EB;
+  --warn-strong: #A33D00;
+  --warn-text-deep: #8B4513;
+
+  --danger: #DC2626;
+  --danger-rgb: 220, 38, 38;
+  --danger-bg: #FFEBEB;
+  --danger-deep: #991B1B;
+
+  --service: #D97706;
+  --service-rgb: 217, 119, 6;
+  --service-bg: #FFF4E6;
+  --service-soft: #FEF3C7;
+
+  --purple: #7C3AED;
+  --purple-rgb: 139, 92, 246;
+  --purple-soft: #FBF0FF;
+
+  --indigo: #6366F1;
+  --indigo-strong: #5558E0;
+
+  /* ── Panel surfaces ── */
+  --panel-soft: #FAFBFC;
+  --panel-cool: #F8F9FB;
+
+  /* ── Typography ── */
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans KR', -apple-system, sans-serif;
+  --display: 'Playfair Display', serif;
+
+  /* ── Effects ── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+  --radius: 10px;
+}
