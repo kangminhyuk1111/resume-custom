@@ -1,0 +1,5 @@
+extends: karrot.yml
+template: minimal
+
+# 당근 공고용 콘텐츠 필터링 (karrot.yml 상속) + ATS 친화 minimal 레이아웃.
+# 두 단계 상속이 잘 작동하는지도 같이 검증.

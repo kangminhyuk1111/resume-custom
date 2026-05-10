@@ -1,0 +1,3 @@
+extends: _default.yml
+template: minimal
+# theme 은 _default 의 blue 를 사용 (minimal 은 거의 흑백이라 큰 영향 없음)
