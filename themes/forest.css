@@ -9,13 +9,13 @@
   --border-light: #F0F0EE;
   --tag-bg: #F3F3F1;
 
-  /* ── Accent (per theme) ── */
-  --accent: #1B4DFF;
-  --accent-rgb: 27, 77, 255;
-  --accent-strong: #1440DD;
-  --accent-light: #E8EEFF;
-  --accent-soft: #F0F4FF;
-  --accent-glow: rgba(27, 77, 255, 0.08);
+  /* ── Accent: forest green ── */
+  --accent: #0D8A5E;
+  --accent-rgb: 13, 138, 94;
+  --accent-strong: #0A6B4A;
+  --accent-light: #DEF1E6;
+  --accent-soft: #ECF8F2;
+  --accent-glow: rgba(13, 138, 94, 0.10);
 
   /* ── Semantic palette (stable across themes) ── */
   --success: #0D8A5E;
@@ -47,7 +47,7 @@
   --indigo: #6366F1;
   --indigo-strong: #5558E0;
 
-  /* ── Panel surfaces (subtle backgrounds) ── */
+  /* ── Panel surfaces ── */
   --panel-soft: #FAFBFC;
   --panel-cool: #F8F9FB;
 
